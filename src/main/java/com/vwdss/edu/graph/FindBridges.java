@@ -11,22 +11,27 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class FindBridges {
 
-    public static Collection<Bridge> findBridges(int[][] graph) {
-        int n = graph.length;
-        boolean[] used = new boolean[n];
-        AtomicInteger timer = new AtomicInteger(0);
-        int[] tin = new int[n];
-        int[] fup = new int[n];
-        List<Bridge> bridges = new ArrayList<>();
+    private int[][] graph;
+
+    private boolean[] used;
+    private int[] tin;
+    private int[] fup;
+
+    private AtomicInteger timer = new AtomicInteger();
+    private List<Bridge> bridges  = new ArrayList<>();
+
+
+    public Collection<Bridge> findBridges(int[][] graph) {
+        int n = init(graph);
 
         for (int i = 0; i < n; ++i)
             if(!used[i])
-                dfs(i, -1, graph, used, tin, fup, timer, bridges);
+                dfs(i, -1);
 
-        return bridges;
+        return new ArrayList<>(bridges);
     }
 
-    private static void dfs(int v, int p, int[][] graph, boolean[] used, int[] tin, int[] fup, AtomicInteger timer, List<Bridge> bridges) {
+    private void dfs(int v, int p) {
         used[v] = true;
         tin[v] = fup[v] = timer.getAndIncrement();
         for (int i = 0; i < graph[v].length; ++i) {
@@ -36,12 +41,23 @@ public class FindBridges {
             if (used[to]) {
                 fup[v] = Math.min(fup[v], tin[to]);
             } else {
-                dfs(to, v, graph, used, tin, fup, timer, bridges);
+                dfs(to, v);
                 fup[v] = Math.min(fup[v], fup[to]);
                 if (fup[to] > tin[v])
                     bridges.add(new Bridge(v, to));
             }
         }
+    }
+
+    private int init(int[][] graph) {
+        this.graph = graph;
+        int n = graph.length;
+        used = new boolean[n];
+        timer.set(0);
+        tin = new int[n];
+        fup = new int[n];
+        bridges.clear();
+        return n;
     }
 
     public static class Bridge {
