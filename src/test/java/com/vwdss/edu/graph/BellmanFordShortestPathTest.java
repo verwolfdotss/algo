@@ -26,7 +26,7 @@ public class BellmanFordShortestPathTest {
                 new Edge(3, 2, 5)
         ));
 
-        List<Integer> shortestPath = new BellmanFordShortestPath().findShortestPath(graph, 0, 2);
+        List<Integer> shortestPath = BellmanFordShortestPath.findShortestPath(graph, 0, 2);
         List<Integer> expected = Arrays.asList(0, 4, 3, 2);
         Assert.assertEquals("Invalid shortest path", expected, shortestPath);
     }

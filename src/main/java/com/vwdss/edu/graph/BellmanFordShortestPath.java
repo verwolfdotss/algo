@@ -8,13 +8,10 @@ import java.util.*;
  */
 public class BellmanFordShortestPath {
 
-    private int[] d;
-    private int[] p;
-
-    public List<Integer> findShortestPath(Graph g, int from, int to) {
-        p = new int[g.vertexes];
+    public static List<Integer> findShortestPath(Graph g, int from, int to) {
+        int[] p = new int[g.vertexes];
         Arrays.fill(p, -1);
-        d = new int[g.vertexes];
+        int[] d = new int[g.vertexes];
         Arrays.fill(d, Integer.MAX_VALUE);
         d[from] = 0;
 
